@@ -2,7 +2,7 @@
 import io from 'npm:socket.io-client@1.7.2';
 
 //Conexión con el servidor mediante socket.io
-var socket = io('https://cschat-server.herokuapp.com/');
+var socket = io('http://localhost:3000');
 
 //variables usadas con el fin de manejar lo que sucede en el html
 var messageForm = $('#sendMessage');  //form
@@ -69,7 +69,7 @@ socket.on('newMessage', function(action, data) {
     $(fromSocket).append("<p class='col-md-12 alert-warning'><strong>" + data.fromuser + ":</strong><br> " + data.msg + "</p>");
 
     //aquí se manda la notificación al usuario que recibe el msj
-    $.notify()
+    $.notify("Nuevo mensaje de: "+data.fromuser,"info");
   }else if (action == "privateMessageFrom") {
     //Mensaje privado - manda
     toSocketDiv += (data.to);
