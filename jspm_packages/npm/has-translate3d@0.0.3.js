@@ -1,0 +1,1 @@
+module.exports = require("npm:has-translate3d@0.0.3/index");

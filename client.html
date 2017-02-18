@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<title>Chat Cliente-Servidor</title>
+
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="./css/chatstyle.css">
+    <!---<link rel="stylesheet" href="./jspm_packages/npm/tab-component@2.0.5/tabs.css">-->
+
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-header">
+        <h1>Chat Cliente/Servidor <small>Chatroom & private chat</small></h1>
+      </div>
+
+      <div class="input-group" id="nickContainer" style="width:300px; text-align:center;margin:0 auto;">
+        <input class="input-lg form-control" id="nickname" type="text" placeholder="Username"/>
+        <span class="input-group-btn"><button class="btn btn-lg btn-primary" id="setNick" type="submit">Ok</button></span>
+      </div>
+
+      <div class="alert fade in alert-danger alert-dismissable" id="login-error" data-dismiss="alert" style="display:none;">
+        <button type="button" class="close" id="closeAlert">x</button>
+        ¡El usuario ya existe, escoge otro!
+      </div>
+
+      <div class="container row" id="content" style="display:none;">
+
+        <div class="col-md-3">
+          <div class="topmenu">
+          	<span class="friends"></span>
+          </div>
+          <div class="friend" data-target="chatroom">
+            <p>
+              <strong>Chatroom</strong>
+            </p>
+          </div>
+          <div id="users">
+
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="topmenu">
+            <span class="chats"></span>
+          </div>
+          <div id="chatview">
+
+            <div class="chat-messages" id="chatroom" >
+
+            </div>
+            <div id="conversations">
+
+            </div>
+            <div>
+              <form class="input-group" id="sendMessage">
+                <input type="text" class="form-control input-lg" id="message" placeholder="Escribe tu mensaje aquí">
+                <span class="input-group-btn">
+                  <button class="btn btn-lg btn-primary" type="submit">Enviar</button>
+                </span>
+              </form>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <script src="jspm_packages/system.js"></script>
+    <script src="config.js"></script>
+
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//rawgit.com/notifyjs/notifyjs/master/dist/notify.js"></script>
+    <script>
+      System.import('./js/main.js');
+    </script>
+  </body>
+</html>
+
+</html>

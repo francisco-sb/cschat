@@ -1,0 +1,1 @@
+module.exports = require("npm:yields-traverse@0.2.0/index.js");

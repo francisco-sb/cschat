@@ -1,0 +1,1 @@
+module.exports = require("npm:tab-component@2.0.5/index.js");

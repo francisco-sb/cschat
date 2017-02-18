@@ -1,0 +1,1 @@
+module.exports = require("npm:touchaction-property@0.0.1/index");

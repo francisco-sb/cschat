@@ -1,0 +1,4 @@
+MultipleErrors: /home/sbpaco/.jspm/packages/npm/hammerjs@2.0.8/src/hammer.suffix.js:1:1: Unexpected token }
+
+MultipleErrors: /home/sbpaco/.jspm/packages/npm/hammerjs@2.0.8/src/hammer.prefix.js:3:1: Unexpected token End of File
+/home/sbpaco/.jspm/packages/npm/hammerjs@2.0.8/src/hammer.prefix.js:3:1: Unexpected token End of File

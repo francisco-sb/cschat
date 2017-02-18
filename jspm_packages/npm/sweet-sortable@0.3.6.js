@@ -1,0 +1,1 @@
+module.exports = require("npm:sweet-sortable@0.3.6/lib/index.js");

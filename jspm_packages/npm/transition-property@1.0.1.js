@@ -1,0 +1,1 @@
+module.exports = require("npm:transition-property@1.0.1/index.js");
