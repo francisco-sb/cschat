@@ -1,7 +1,7 @@
 import io from 'npm:socket.io-client@1.7.2';
 
 //Conexión con el servidor mediante socket.io
-var socket = io('http://localhost:3000');
+var socket = io('https://cschat-server.herokuapp.com/');
 
 var messageForm = $('#sendMessage');
 var message = $('#message');
@@ -51,16 +51,16 @@ socket.on('newMessage', function(action, data) {
   console.log(action,data);
 
   if (action == "online") {
-    chatroom.append("<p class='col-md-12 alert-info'><strong>" + data + "</strong></p>");
+    chatroom.append("<p class='col-md-12 alert-info'>" + data + "</p>");
   }else if (action == "offline") {
-    chatroom.append("<p class='col-md-12 alert-danger'><strong>" + data + "</strong></p>");
+    chatroom.append("<p class='col-md-12 alert-danger'>" + data + "</p>");
   }else if (action == "message") {
     chatroom.append("<p class='col-md-12 alert-warning'><strong>" + data.fromuser + ":</strong><br> " + data.msg + "</p>");
   }else if (action == "privateMessageTo") {
     fromSocket += (data.fromid);
     $(fromSocket).append("<p class='col-md-12 alert-warning'><strong>" + data.fromuser + ":</strong><br> " + data.msg + "</p>");
 
-    $.notify("Nuevo mensaje de: "+data.fromuser,"info");
+    $.notify()
   }else if (action == "privateMessageFrom") {
     toSocketDiv += (data.to);
     $(toSocketDiv).append("<p class='col-md-12 alert-warning'><strong>" + data.fromuser + ":</strong><br> " + data.msg + "</p>");
