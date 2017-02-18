@@ -1,31 +1,33 @@
+//importamos socket.io-client desde jspm_packages
 import io from 'npm:socket.io-client@1.7.2';
 
 //Conexión con el servidor mediante socket.io
 var socket = io('https://cschat-server.herokuapp.com/');
 
-var messageForm = $('#sendMessage');
-var message = $('#message');
-var chatroom = $('#chatroom');
+//variables usadas con el fin de manejar lo que sucede en el html
+var messageForm = $('#sendMessage');  //form
+var message = $('#message');  //input
+var chatroom = $('#chatroom');  //div chatroom
 
-var nickname = $('#nickname');
-var setNick = $('#setNick');
-var users = $('#users');
+var nickname = $('#nickname'); //input nickname
+var setNick = $('#setNick');  //button
 
-//$('#chatview').tabs();
+var users = $('#users');  //div de usuarios
+
 
 //Para que el socket reconozca al usuario
 var my_username = "";
 var my_id = "";
 
-var toSocket= "chatroom";
-var fromSocket= "#";
-var toSocketDiv="#";
+//para manejar el envío y recepción de mensajes
+var toSocket= "chatroom"; //se inicializa con "chatroom" para que pueda mandar un msj sin necesidad de esperar que se seleccione el usuario
+var fromSocket= "#";  //el id del div de usuario del que viene el mensaje privado
+var toSocketDiv="#"; //el id del div de usuario al que se manda el mensaje privado
 
 //Para la creación de las conversaciones y los divs de la lista de usuarios
 var divusers = $('#conversations');
 
-var fromUser = "";
-
+//éste evento controla la creación de usuarios
 setNick.click(function(e){
   e.preventDefault();
   socket.emit('newUser', nickname.val(), function(data){
@@ -37,16 +39,21 @@ setNick.click(function(e){
     }
   });
 
+  //aquí se almacena el nombre del usuario
   my_username = nickname.val();
   console.log('tosocket: %s user: %s',toSocket,my_username);
 });
 
+//controla el submit del formulario donde se envían los mensajes
 messageForm.submit(function(e) {
   e.preventDefault();
+
+  //se le manda al socket 5 parámetros, el evento sendMessage, los sockets from y to y el contenido del msj
   if (message.val()!='')socket.emit('sendMessage', toSocket, my_username, my_id, message.val());
   message.val('');
 });
 
+//Evento newMessage, controla cómo se controlará cada tipo de mensaje
 socket.on('newMessage', function(action, data) {
   console.log(action,data);
 
@@ -57,44 +64,45 @@ socket.on('newMessage', function(action, data) {
   }else if (action == "message") {
     chatroom.append("<p class='col-md-12 alert-warning'><strong>" + data.fromuser + ":</strong><br> " + data.msg + "</p>");
   }else if (action == "privateMessageTo") {
+    //Mensaje privado - recibe
     fromSocket += (data.fromid);
     $(fromSocket).append("<p class='col-md-12 alert-warning'><strong>" + data.fromuser + ":</strong><br> " + data.msg + "</p>");
 
+    //aquí se manda la notificación al usuario que recibe el msj
     $.notify()
   }else if (action == "privateMessageFrom") {
+    //Mensaje privado - manda
     toSocketDiv += (data.to);
     $(toSocketDiv).append("<p class='col-md-12 alert-warning'><strong>" + data.fromuser + ":</strong><br> " + data.msg + "</p>");
   }
 
 });
 
+//Evento usernames, se listan los usuarios en el div de usuarios #users
 socket.on('usernames', function(data){
   var usernamesString = "";
   var newConversation = "";
 
   for(var username in data){
 
-    usernamesString+="<div class='friend' data-target='"+data[username]+"'><p><strong>"+username+"</strong></p></div></button>"
+    //se crea un div que contiene al usuario
+    usernamesString+="<div class='friend' data-target='"+data[username]+"'><p><strong>"+username+"</strong></p></div>"
+    //se crea el div de cada conversación
     newConversation+="<div class='chat-messages' id='"+data[username]+"'></div>"
 
     $('.chat-messages').hide();
     console.log(data);
   }
-  users.html(usernamesString);
-  divusers.html(newConversation);
+  users.html(usernamesString); //se pintan todos los usuarios
+  divusers.html(newConversation); //se pintan todas las conversaciones
 
   $('.friend').click(function() {
-    //toSocket = $(this).attr('href');
-    //toSocket = toSocket.substring(1);
 
     my_id = data[my_username];
-    //$(divID).toggle();
-    //socket.emit('check_user', my_username, my_id);
 
-    //Hide current visible section
     $('.chat-messages:visible').hide();
 
-    // Show selected section
+    // Mostrar conversación seleccionada
     toSocket = $(this).data('target');
     if (toSocket=="chatroom") {
       $('#chatroom').show();
@@ -102,7 +110,6 @@ socket.on('usernames', function(data){
       $('#conversations > #'+toSocket).show();
 
     }
-
 
     console.log('id: %s toSocket: %s', my_id, toSocket);
   }).first().click();
