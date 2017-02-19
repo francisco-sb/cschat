@@ -27,6 +27,8 @@ var toSocketDiv=""; //el id del div de usuario al que se manda el mensaje privad
 
 //Para la creación de las conversaciones y los divs de la lista de usuarios
 var divusers = $('#conversations');
+var chatTitle = $('#chatTitle');
+var title = "";
 
 //éste evento controla la creación de usuarios
 setNick.click(function(e){
@@ -60,14 +62,18 @@ socket.on('newMessage', function(action, data) {
 
   if (action == "online") {
     chatroom.append("<p class='col-md-12 alert-info'>" + data + "</p>");
+    chatroom.scrollTop(chatroom.prop("scrollHeight")); //mantiene el scroll al fondo del div
   }else if (action == "offline") {
     chatroom.append("<p class='col-md-12 alert-danger'>" + data + "</p>");
+    chatroom.scrollTop(chatroom.prop("scrollHeight"));
   }else if (action == "message") {
     chatroom.append("<p class='col-md-12 alert-warning'><strong>" + data.fromuser + ":</strong><br> " + data.msg + "</p>");
+    chatroom.scrollTop(chatroom.prop("scrollHeight"));
   }else if (action == "privateMessageTo") {
     //Mensaje privado - recibe
     fromSocket = "#" + (data.fromid);
-    $(fromSocket).append("<p class='col-md-12 alert-warning'><strong>" + data.fromuser + ":</strong><br> " + data.msg + "</p>");
+    $(fromSocket).append("<p class='col-md-12 alert-success'><strong>" + data.fromuser + ":</strong><br> " + data.msg + "</p>");
+    $(fromSocket).scrollTop($(fromSocket).prop("scrollHeight"));
 
     //aquí se manda la notificación al usuario que recibe el msj
     $.notify("Nuevo mensaje de: "+data.fromuser,"info");
@@ -75,6 +81,7 @@ socket.on('newMessage', function(action, data) {
     //Mensaje privado - manda
     toSocketDiv = "#" + (data.to);
     $(toSocketDiv).append("<p class='col-md-12 alert-warning'><strong>" + data.fromuser + ":</strong><br> " + data.msg + "</p>");
+    $(toSocketDiv).scrollTop($(toSocketDiv).prop("scrollHeight"));
   }
 
 });
@@ -100,6 +107,7 @@ socket.on('usernames', function(data){
   $('.friend').click(function() {
 
     my_id = data[my_username];
+    title = $(this).text();
 
     $('.chat-messages:visible').hide();
 
@@ -107,9 +115,10 @@ socket.on('usernames', function(data){
     toSocket = $(this).data('target');
     if (toSocket=="chatroom") {
       $('#chatroom').show();
+      chatTitle.text(title);
     }else{
       $('#conversations > #'+toSocket).show();
-
+      chatTitle.text(title);
     }
 
     console.log('id: %s toSocket: %s', my_id, toSocket);
