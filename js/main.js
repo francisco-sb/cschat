@@ -2,7 +2,7 @@
 import io from 'npm:socket.io-client@1.7.2';
 
 //Conexión con el servidor mediante socket.io
-var socket = io('http://localhost:3000');
+var socket = io('https://cschat-server.herokuapp.com/');
 
 //variables usadas con el fin de manejar lo que sucede en el html
 var messageForm = $('#sendMessage');  //form
