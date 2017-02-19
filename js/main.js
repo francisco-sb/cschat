@@ -22,8 +22,8 @@ var my_id = "";
 
 //para manejar el envío y recepción de mensajes
 var toSocket= "chatroom"; //se inicializa con "chatroom" para que pueda mandar un msj sin necesidad de esperar que se seleccione el usuario
-var fromSocket= "#";  //el id del div de usuario del que viene el mensaje privado
-var toSocketDiv="#"; //el id del div de usuario al que se manda el mensaje privado
+var fromSocket= "";  //el id del div de usuario del que viene el mensaje privado
+var toSocketDiv=""; //el id del div de usuario al que se manda el mensaje privado
 
 //Para la creación de las conversaciones y los divs de la lista de usuarios
 var divusers = $('#conversations');
@@ -66,14 +66,14 @@ socket.on('newMessage', function(action, data) {
     chatroom.append("<p class='col-md-12 alert-warning'><strong>" + data.fromuser + ":</strong><br> " + data.msg + "</p>");
   }else if (action == "privateMessageTo") {
     //Mensaje privado - recibe
-    fromSocket += (data.fromid);
+    fromSocket = "#" + (data.fromid);
     $(fromSocket).append("<p class='col-md-12 alert-warning'><strong>" + data.fromuser + ":</strong><br> " + data.msg + "</p>");
 
     //aquí se manda la notificación al usuario que recibe el msj
     $.notify("Nuevo mensaje de: "+data.fromuser,"info");
   }else if (action == "privateMessageFrom") {
     //Mensaje privado - manda
-    toSocketDiv += (data.to);
+    toSocketDiv = "#" + (data.to);
     $(toSocketDiv).append("<p class='col-md-12 alert-warning'><strong>" + data.fromuser + ":</strong><br> " + data.msg + "</p>");
   }
 
